@@ -9,6 +9,7 @@ import './assets/main.css'
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL
 
+console.log(axios.defaults.baseURL)
 
 const app = createApp(App)
 
