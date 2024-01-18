@@ -223,7 +223,7 @@ export default {
         postMissedWord() {
             if (!this.detectIfNewWord()) {
                 axios
-                .post('/api/words/create', { correct_spelling: this.word, incorrect_spelling: this.$refs.wordInput.value })
+                .post('https://beehive-backend-api-app-489f33771e71.herokuapp.com/api/words/create', { correct_spelling: this.word, incorrect_spelling: this.$refs.wordInput.value })
                 .then(response => { 
                         this.missedWords.push(this.word)
                     })
@@ -235,7 +235,7 @@ export default {
 
         getMyWords() {
             axios
-                .get('/api/words/user_words')
+                .get('https://beehive-backend-api-app-489f33771e71.herokuapp.com/api/words/user_words')
                 .then(response => {
                     this.missedWords = response.data.data
                     this.getWord()
