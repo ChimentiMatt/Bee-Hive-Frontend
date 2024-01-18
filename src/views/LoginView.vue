@@ -74,9 +74,10 @@ export default {
                 this.errors.push('Your password is missing');
             if (this.errors.length === 0) {
                 await axios
-                    .post('https://beehive-backend-api-app-489f33771e71.herokuapp.com/api/login/', this.form)
+                    .post('beehive-backend-api-app-489f33771e71.herokuapp.com/api/login/', this.form)
                     .then(response => {
                     this.userStore.setToken(response.data);
+                    console.log('res', response)
                     axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.access;
                     this.$router.push('/');
                 })
