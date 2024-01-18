@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    .lilitaFont {
+        font-family: 'Lily Script One', system-ui;
+    }
+}
+
+/* Vue Router class to apply css to RouterLink elements */
+.router-link-exact-active {
+    color: #2C87D7;
+    font-size: 30px;
+}
