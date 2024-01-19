@@ -13,10 +13,10 @@
             <canvas ref="canvas" width="350" height="50" class='border-2 border-black rounded-2xl bg-white'></canvas>
         </div>
 
-        <div class="flex flex-col items-center mt-[2.5rem] font-bold">
+        <div class="flex flex-col items-center mt-[0.5rem] font-bold">
             <p class="text-white w-[20rem]">Definition</p>
 
-            <div class="h-[10rem] sm:h-[10rem] w-[20rem]">
+            <div class="h-[10rem] sm:h-[8rem] w-[20rem]">
                 <p @click="hearWord(definition)" class="mt-[1rem]">{{ definition }}</p>
                 <img @click="hearWord(definition)" class="h-[1rem] cursor-pointer hover:opacity-50" src="../assets/images/soundIcon.png" />
             </div>
