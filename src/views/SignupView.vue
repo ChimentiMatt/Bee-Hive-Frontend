@@ -92,6 +92,8 @@ export default {
                 })
                 .catch(error => {
                     console.log('error', error)
+                    this.toastStore.showToast(5000, ['Something went wrong. Please try again'], 'bg-red-300')
+
                 })
             } else {
                 this.toastStore.showToast(5000, this.errors, 'bg-red-300')
