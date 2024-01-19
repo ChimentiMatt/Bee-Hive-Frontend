@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-primary-green h-screen ">
+    <div class="bg-primary-green fixed bg-fixed h-screen w-screen ">
         <Navbar />
 
         <h1 class="text-[40px] mt-[2rem] text-center text-white drop-shadow-lg font-bold">Spelling List</h1>
