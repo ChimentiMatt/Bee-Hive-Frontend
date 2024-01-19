@@ -73,7 +73,7 @@ export default {
 
             if (this.errors.length === 0) {
                 axios
-                .post('https://beehive-backend-api-app-489f33771e71.herokuapp.com/api/signup/', this.form )
+                .post('/api/signup/', this.form )
                 .then(response => {
                     if (response.data.status === 'success') {
                         this.toastStore.showToast(5000, ['The user is Registered. Please Log in'], 'bg-primary-green')

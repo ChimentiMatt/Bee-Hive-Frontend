@@ -81,7 +81,7 @@ export default {
     methods: {
         getWords() {
             axios
-                .get('https://beehive-backend-api-app-489f33771e71.herokuapp.com/api/words/user_words')
+                .get('/api/words/user_words')
                 .then(response => {
                     this.words = response.data.data
                 })
@@ -92,7 +92,7 @@ export default {
 
         deleteWord(id) {
             axios
-                .delete(`https://beehive-backend-api-app-489f33771e71.herokuapp.com/api/words/${id}/delete_word`)
+                .delete(`/api/words/${id}/delete_word`)
                 .then(response => {
                     this.getWords()
                 })
@@ -105,7 +105,7 @@ export default {
             if (this.$refs.wordInput.value !== '') {
 
                 axios
-                .post('https://beehive-backend-api-app-489f33771e71.herokuapp.com/api/words/create', { correct_spelling: this.$refs.wordInput.value, incorrect_spelling: 'n/a' })
+                .post('/api/words/create', { correct_spelling: this.$refs.wordInput.value, incorrect_spelling: 'n/a' })
                 .then(response => { 
                     this.getWords()
                 })

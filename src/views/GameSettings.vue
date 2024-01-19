@@ -100,7 +100,7 @@ export default {
         // api call should be moved to an earlier point and sent to store. Temporary code
         getWords() {
             axios
-                .get('https://beehive-backend-api-app-489f33771e71.herokuapp.com/api/words/user_words')
+                .get('/words/user_words')
                 .then(response => {
                     if ( response.data.data.length < 1) {
                         this.toastStore.showToast(5000, ['Unable to select My Words. No current words in list.'], 'bg-red-300');
