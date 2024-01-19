@@ -16,28 +16,42 @@
     </div>
     
     <div v-else>
-        <GameSettings />
-    </div>
+        <!-- <Navbar /> -->
+        <div v-if="!test.settingsChosen">
+                <GameSettings />
+        </div>
+        <div v-else>
+            <PlayView />
+        </div>
+        </div>
 </template>
 
 
 <script>
     import PlayView from './PlayView.vue';
     import GameSettings from './GameSettings.vue';
+    import Navbar from '@/components/Navbar.vue';
     import { useUserStore } from '../stores/user';
+    import { useGameSettings } from '@/stores/gameSettings'
 
     export default {
       setup() {
         const userStore = useUserStore()
+        const test = useGameSettings()
 
         return {
-          userStore
+          userStore,
+          useGameSettings,
+          test
         }
       },
 
       components: {
         PlayView,
-        GameSettings
+        GameSettings,
+        Navbar,
+        useUserStore,
+        useGameSettings
       },
     }
 </script>

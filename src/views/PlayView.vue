@@ -1,8 +1,10 @@
 <template>
-    <div class="bg-primary-green">
+    
+    <div class="bg-primary-green h-screen">
+        <Navbar />
 
-        <img class="h-[1.5rem] rotate-180 ml-5 mt-[1rem] cursor-pointer" src="../assets/images/arrow.webp"
-            @click="$emit('update:modelValue', False)"
+        <img class="h-[1.5rem] rotate-180 ml-5 pt-[1rem] cursor-pointer" src="../assets/images/arrow.webp"
+            @click="back"
         />
 
         <div class="flex mr-[10rem] justify-center">
@@ -54,28 +56,34 @@ import HardList from '../assets/hardWords'
 import axios from 'axios';
 import { useUserStore } from '../stores/user'
 import { useToastStore } from '@/stores/toast';
+import { useVoiceStore } from '@/stores/voice'
+import { useGameSettings } from '@/stores/gameSettings'
 
 export default {
     setup() {
         const userStore = useUserStore()
         const toastStore = useToastStore()
+        const voiceStore = useVoiceStore()
+        const gameSettings = useGameSettings()
 
         return {
             userStore,
             toastStore,
+            voiceStore,
+            gameSettings
         }
     },
 
     props: {
-        difficulty: String,
-        numOfWords: Number,
-        settingsChosen: Boolean
+        // difficulty: String,
+        // numOfWords: Number,
     },
 
     components: {
         Navbar,        
         LogoutBtn,
-        SubmitBtn
+        SubmitBtn,
+        useGameSettings
     },
 
     mounted() {
@@ -96,29 +104,25 @@ export default {
 
     methods: {
         hearWord(targetWord) {
-            var msg = new SpeechSynthesisUtterance();
-            msg.text = targetWord;
-            window.speechSynthesis.speak(msg);
-
-            // section will be built out to have different voice variety
-        
-            // const voices = window.speechSynthesis.getVoices();
-            // console.log(voices)
+            const utterance  = new SpeechSynthesisUtterance();
+            utterance.text = targetWord;
+            utterance.voice = this.voiceStore.voices[this.voiceStore.currentVoiceIndex]
+            window.speechSynthesis.speak(utterance);
         },
 
 
         getWord() {
             let index = 0
 
-            if (this.difficulty === 'easy') {
+            if (this.gameSettings.difficulty === 'easy') {
                 index = Math.floor(Math.random() * (EasyList.list.length - 0) + 0);
                 this.word = EasyList.list[index]
             }
-            else if (this.difficulty  === 'hard') {
+            else if (this.gameSettings.difficulty  === 'hard') {
                 index = Math.floor(Math.random() * (HardList.list.length - 0) + 0);
                 this.word = HardList.list[index]
             }
-            else if (this.difficulty  === 'myWords') {
+            else if (this.gameSettings.difficulty  === 'myWords') {
                 index = Math.floor(Math.random() * (this.missedWords.length - 0) + 0);
                 this.word = this.missedWords[index].correct_spelling
             }
@@ -173,7 +177,7 @@ export default {
         },
 
         drawProgress() {
-            const pointsPerCorrect = 350 / this.numOfWords
+            const pointsPerCorrect = 350 /  this.gameSettings.numOfWords
             
             const ctx = this.$refs.canvas.getContext("2d");
             this.score % 2 === 0 ? ctx.fillStyle = "#F7F06A" : ctx.fillStyle = "black"
@@ -246,8 +250,11 @@ export default {
         },
 
         back() {
-            this.$emit('someEvent')
+            console.log('back', this.gameSettings.settingsChosen)
+            this.gameSettings.settingsChosen = false
+            console.log('back', this.gameSettings.settingsChosen)
         }
+
     },
 }
 </script>
