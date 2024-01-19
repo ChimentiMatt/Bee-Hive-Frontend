@@ -76,17 +76,17 @@ export default {
                 await axios
                     .post('https://beehive-backend-api-app-489f33771e71.herokuapp.com/api/login/', this.form)
                     .then(response => {
-                    this.userStore.setToken(response.data);
-                    console.log('res', response)
-                    axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.access;
-                    this.$router.push('/');
+                        this.userStore.setToken(response.data);
+                        console.log('res', response)
+                        axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.access;
+                        this.$router.push('/');
                 })
                     .catch(error => {
                     console.log('error', error);
                     this.toastStore.showToast(5000, ['Unable to login'], 'bg-red-300');
                 });
             }
-        }
+        },
     },
 
 }

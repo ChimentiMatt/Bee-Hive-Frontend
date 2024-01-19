@@ -5,12 +5,14 @@ import { dirname } from 'path';
 const require = createRequire(import.meta.url);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+const cors = require('cors');
 
 const express = require('express')
 const serveStatic = require('serve-static')
 const path = require ('path')
 
 const app = express()
+app.use(cors());
 
 app.use('/', serveStatic(path.join(__dirname, '/dist')))
 
