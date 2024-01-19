@@ -16,8 +16,8 @@
         <div class="flex flex-col items-center mt-[0.5rem] font-bold">
             <p class="text-white w-[20rem]">Definition</p>
 
-            <div class="h-[10rem] sm:h-[8rem] w-[20rem]">
-                <p @click="hearWord(definition)" class="mt-[1rem]">{{ definition }}</p>
+            <div class="h-[8rem] sm:h-[12rem] w-[20rem]">
+                <p @click="hearWord(definition)" class="mt-[0.5rem]">{{ definition }}</p>
                 <img @click="hearWord(definition)" class="h-[1rem] cursor-pointer hover:opacity-50" src="../assets/images/soundIcon.png" />
             </div>
 
@@ -31,8 +31,8 @@
             </div>
 
             <form v-on:submit.prevent="submitWord">
-                <div class="w-[20rem] flex border-b-2 items-center mt-[1rem]">
-                    <label class="flex items-end h-10 text-white">Answer</label>
+                <div class="w-[20rem] flex border-b-2 items-center md:mt-[1rem]">
+                    <label class="flex items-end text-white">Answer</label>
                     <input ref="wordInput" type="text" class="text-[24px] w-full mt-2 ml-4 py-4 px-6 border border-gray-200 rounded-lg bg-transparent border-none outline-none">
                 </div>
 
