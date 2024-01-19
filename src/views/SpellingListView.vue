@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-primary-green fixed bg-fixed h-screen w-screen ">
+    <div class="bg-primary-green bg-fixed h-screen w-screen ">
         <Navbar />
 
         <h1 class="text-[40px] mt-[2rem] text-center text-white drop-shadow-lg font-bold">Spelling List</h1>
@@ -15,7 +15,7 @@
         </div>
   
         <div 
-            class="flex flex-col items-center mt-[1rem] text-primary-blue font-bold overflow-hidden whitespace-nowrap">
+            class="flex flex-col items-center mt-[1rem] bg-primary-green text-primary-blue font-bold overflow-hidden whitespace-nowrap">
 
             <div class="flex justify-center w-[21rem] border-b-2 ">
                 <p class="w-[20rem]">Word</p>
@@ -37,7 +37,7 @@
                         <p class="w-[10rem] text-start pl-1 pt-2 border-b-[1px]">{{ word.incorrect_spelling }}</p>
                         <button @click="deleteWord(word.id)" class="hover:text-red-300 ">x</button>
                     </div>
-                    <button v-if="filteredItems.length < 17" @click="addWord" class="mt-1 relative  w-[10rem]">add word</button>
+                    <button v-if="filteredItems.length < 17" @click="addWord" class="mt-1 relative w-[10rem] hover:opacity-80">add word</button>
                 </div>
             </div>
         </div>
@@ -107,6 +107,7 @@ export default {
                 axios
                 .post('/api/words/create', { correct_spelling: this.$refs.wordInput.value, incorrect_spelling: 'n/a' })
                 .then(response => { 
+                    this.$refs.wordInput.value = ''
                     this.getWords()
                 })
                 .catch(error => {

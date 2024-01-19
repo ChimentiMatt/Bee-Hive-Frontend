@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-primary-green fixed bg-fixed h-screen w-screen">
+    <div class="bg-primary-green">
 
         <img class="h-[1.5rem] rotate-180 ml-5 mt-[1rem] cursor-pointer " src="../assets/images/arrow.webp"
             @click="$emit('update:modelValue', False)"

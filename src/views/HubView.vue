@@ -1,7 +1,7 @@
 <template>
     <Navbar />
     
-    <div class="bg-primary-green fixed bg-fixed h-screen w-screen">
+    <div class="bg-primary-green  h-screen">
         <LogoutBtn />
     </div>
 </template>
