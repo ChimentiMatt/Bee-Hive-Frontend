@@ -77,7 +77,6 @@ export default {
                     .post('/api/login/', this.form)
                     .then(response => {
                         this.userStore.setToken(response.data);
-                        console.log('res', response)
                         axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.access;
                         this.$router.push('/');
                 })
