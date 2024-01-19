@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-primary-green bg-fixed h-screen w-screen ">
+    <div class="bg-primary-green bg-fixed h-screen w-screen">
         <Navbar />
 
         <h1 class="text-[40px] mt-[2rem] text-center text-white drop-shadow-lg font-bold">Spelling List</h1>
@@ -15,7 +15,7 @@
         </div>
   
         <div 
-            class="flex flex-col items-center mt-[1rem] bg-primary-green text-primary-blue font-bold overflow-hidden whitespace-nowrap">
+            class="flex flex-col items-center mt-[1rem] pb-[5rem] bg-primary-green text-primary-blue font-bold overflow-hidden whitespace-nowrap">
 
             <div class="flex justify-center w-[21rem] border-b-2 ">
                 <p class="w-[20rem]">Word</p>

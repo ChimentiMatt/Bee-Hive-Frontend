@@ -16,7 +16,7 @@
         <div class="flex flex-col items-center mt-[2.5rem] font-bold">
             <p class="text-white w-[20rem]">Definition</p>
 
-            <div class="h-[10rem] sm:h-[12.5rem] w-[20rem]">
+            <div class="h-[10rem] sm:h-[10rem] w-[20rem]">
                 <p @click="hearWord(definition)" class="mt-[1rem]">{{ definition }}</p>
                 <img @click="hearWord(definition)" class="h-[1rem] cursor-pointer hover:opacity-50" src="../assets/images/soundIcon.png" />
             </div>
