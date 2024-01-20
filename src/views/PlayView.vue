@@ -2,12 +2,12 @@
     
     <div class="bg-primary-green h-screen">
         <Navbar />
-
-        <img class="h-[1.5rem] rotate-180 ml-5 pt-[1rem] cursor-pointer" src="../assets/images/arrow.webp"
+        {{ currentVoice.name }}
+        <img class="absolute h-[1.5rem] rotate-180 ml-5 mt-[0.5rem] cursor-pointer hover:opacity-80 " src="../assets/images/arrow.webp"
             @click="back"
         />
 
-        <div class="flex mr-[10rem] justify-center">
+        <div class="flex mr-[10rem] pt-2 justify-center md:mt-2">
             <img class="h-[2.5rem] rotate-[-10deg] cursor-pointer hover:opacity-50" src="../assets/images/wings.png" />
         </div>
 
@@ -15,10 +15,18 @@
             <canvas ref="canvas" width="350" height="50" class='border-2 border-black rounded-2xl bg-white'></canvas>
         </div>
 
-        <div class="flex flex-col items-center mt-[0.5rem] font-bold">
-            <p class="text-white w-[20rem]">Definition</p>
+        <div class="flex flex-col items-center mt-[0.5rem] font-bold ">
+            <div class="text-white w-[20rem]">
+                <div class="flex justify-center ">
+                    <p class="w-[5rem]">voice</p>
+                    <select v-model="currentVoice" @change="voiceStore.setVoice($event)" ref="voiceSelect" 
+                        class="bg-primary-green border-b-2  text-black outline-none ml-2 w-[15rem]">
+                    </select>
+                </div>
+                <p>Definition</p>
+            </div>
 
-            <div class="h-[8rem] sm:h-[12rem] w-[20rem]">
+            <div class="h-[8rem] sm:h-[12rem] w-[20rem] hover:opacity-50">
                 <p @click="hearWord(definition)" class="mt-[0.5rem]">{{ definition }}</p>
                 <img @click="hearWord(definition)" class="h-[1rem] cursor-pointer hover:opacity-50" src="../assets/images/soundIcon.png" />
             </div>
@@ -27,20 +35,20 @@
                 <p v-for="missedWords in attempts" class="text-red-500">{{missedWords}}</p>
             </div>
 
-            <div class="flex items-center cursor-pointer" @click="hearWord(word)">
+            <div class="flex items-center cursor-pointer hover:opacity-50" @click="hearWord(word)">
                 <p class="text-[.5rem]">hear word</p>
-                <img class="h-[2.5rem] hover:opacity-50" src="../assets/images/soundIcon.png" />
+                <img class="h-[2.5rem]" src="../assets/images/soundIcon.png" />
             </div>
 
             <form v-on:submit.prevent="submitWord">
                 <div class="w-[20rem] flex border-b-2 items-center md:mt-[1rem]">
                     <label class="flex items-end text-white">Answer</label>
-                    <input ref="wordInput" type="text" class="text-[24px] w-full mt-2 ml-4 py-4 px-6 border border-gray-200 rounded-lg bg-transparent border-none outline-none">
+                    <input ref="wordInput" type="text" class="text-[24px] w-full ml-4 py-4 px-6 border border-gray-200 rounded-lg bg-transparent border-none outline-none">
                 </div>
 
                 <SubmitBtn text="Submit"/>
             </form>
-            <p @click="skipWord" class="w-[5rem] ml-[15rem] text-right mt-[1rem] opacity-50 cursor-pointer">Skip Word</p>
+            <p @click="skipWord" class="w-[5rem] ml-[15rem] text-right mt-[1rem] opacity-50 cursor-pointer hover:opacity-80">Skip Word</p>
         </div>
 
     </div>
@@ -74,11 +82,6 @@ export default {
         }
     },
 
-    props: {
-        // difficulty: String,
-        // numOfWords: Number,
-    },
-
     components: {
         Navbar,        
         LogoutBtn,
@@ -87,8 +90,15 @@ export default {
     },
 
     mounted() {
+        // TODO get play's voice select to populate with current voice
+        // this.currentVoice = this.voiceStore.voices[this.voiceStore.currentVoiceIndex]
+        // console.log(this.currentVoice.name)
+        // this.currentVoice = this.currentVoice.name
         this.drawFace()
         this.getMyWords()
+        this.populateVoiceFromStore()
+        this.$refs.voiceSelect.value = 'test'
+
     },
 
     data() {
@@ -98,7 +108,8 @@ export default {
             score: 0,
             points: 35,
             attempts: [],
-            missedWords: []
+            missedWords: [],
+            currentVoice: ''
         }
     },
 
@@ -118,11 +129,11 @@ export default {
                 index = Math.floor(Math.random() * (EasyList.list.length - 0) + 0);
                 this.word = EasyList.list[index]
             }
-            else if (this.gameSettings.difficulty  === 'hard') {
+            else if (this.gameSettings.difficulty === 'hard') {
                 index = Math.floor(Math.random() * (HardList.list.length - 0) + 0);
                 this.word = HardList.list[index]
             }
-            else if (this.gameSettings.difficulty  === 'myWords') {
+            else if (this.gameSettings.difficulty === 'myWords') {
                 index = Math.floor(Math.random() * (this.missedWords.length - 0) + 0);
                 this.word = this.missedWords[index].correct_spelling
             }
@@ -249,10 +260,19 @@ export default {
                 })
         },
 
+        // TODO GameSettings.vue and PlayView have similar functions See if can be put in store.
+        populateVoiceFromStore() {
+            for(let i = 0; i < this.voiceStore.voices.length; i++) {
+                    const option = document.createElement('option');
+                    option.textContent = this.voiceStore.voices[i].name + ' (' + this.voiceStore.voices[i].lang + ')';
+                    option.value = i;
+                    this.$refs.voiceSelect.appendChild(option);
+                }     
+                
+        },
+
         back() {
-            console.log('back', this.gameSettings.settingsChosen)
             this.gameSettings.settingsChosen = false
-            console.log('back', this.gameSettings.settingsChosen)
         }
 
     },

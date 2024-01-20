@@ -16,8 +16,7 @@
     </div>
     
     <div v-else>
-        <!-- <Navbar /> -->
-        <div v-if="!test.settingsChosen">
+        <div v-if="!gameSettingStore.settingsChosen">
                 <GameSettings />
         </div>
         <div v-else>
@@ -30,26 +29,24 @@
 <script>
     import PlayView from './PlayView.vue';
     import GameSettings from './GameSettings.vue';
-    import Navbar from '@/components/Navbar.vue';
     import { useUserStore } from '../stores/user';
     import { useGameSettings } from '@/stores/gameSettings'
 
     export default {
       setup() {
         const userStore = useUserStore()
-        const test = useGameSettings()
+        const gameSettingStore = useGameSettings()
 
         return {
           userStore,
           useGameSettings,
-          test
+          gameSettingStore
         }
       },
 
       components: {
         PlayView,
         GameSettings,
-        Navbar,
         useUserStore,
         useGameSettings
       },

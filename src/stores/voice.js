@@ -9,6 +9,8 @@ export const useVoiceStore = defineStore({
     }),
 
     actions: {
-
+        setVoice(event) {
+            this.currentVoiceIndex = event.target.value
+        }
     }
 })

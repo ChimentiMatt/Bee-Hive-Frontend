@@ -27,7 +27,7 @@
                 
                 <div class="w-[20rem] flex border-b-2 items-center mt-[2rem]">
                     <label>Voice</label>
-                    <select v-model="forms.voice" @change="setVoice($event)" ref="voiceSelect" class="w-full ml-[2rem] mt-2 bg-transparent text-right pr-2">
+                    <select v-model="forms.voice" @change="voiceStore.setVoice($event)" ref="voiceSelect" class="w-full ml-[2rem] mt-2 bg-transparent text-right pr-2">
                     </select>
                 </div>
             </div>
@@ -89,7 +89,6 @@ export default {
 
     mounted() {
         this.populateVoiceFromAPI()
-        // this.getWords()
     },
 
     methods: {
@@ -142,6 +141,7 @@ export default {
             )
         },
 
+        // TODO GameSettings.vue and PlayView have similar functions See if can be put in store.
         populateVoiceFromAPI() {
             const data = this.getVoices();
             const voiceArray = []
@@ -153,27 +153,11 @@ export default {
                     option.value = i;
                     this.$refs.voiceSelect.appendChild(option);
                     voiceArray.push(voices[i])
-                    // console.log("!", voices[i])
                 }     
             });
             this.voiceStore.voices = voiceArray
         },
-
-        populateVoiceFromStore() {
-            for(let i = 0; i < this.voiceStore.voices.length; i++) {
-                    const option = document.createElement('option');
-                    option.textContent = voices[i].name + ' (' + voices[i].lang + ')';
-                    option.value = i;
-                    this.$refs.voiceSelect.appendChild(option);
-                    voiceArray.push(voices[i])
-                    // console.log("?", voices[i])
-                }     
-        },
-
-        setVoice(event) {
-            this.voiceStore.currentVoiceIndex = event.target.value
-        },
-
     }
 }
 </script>
+
