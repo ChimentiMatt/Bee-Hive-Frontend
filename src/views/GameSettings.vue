@@ -27,7 +27,8 @@
                 
                 <div class="w-[20rem] flex border-b-2 items-center mt-[2rem]">
                     <label>Voice</label>
-                    <select v-model="forms.voice" @change="voiceStore.setVoice($event)" ref="voiceSelect" class="w-full ml-[2rem] mt-2 bg-transparent text-right pr-2">
+                    <select v-model="forms.voice" @change="changeVoice($event)" ref="voiceSelect" class="w-full ml-[2rem] mt-2 bg-transparent text-right pr-2">
+                        <option>Choose a voice</option>
                     </select>
                 </div>
             </div>
@@ -93,10 +94,17 @@ export default {
 
     methods: {
         submitForm() {
+            console.log(this.$refs.voiceSelect.value)
+            if (this.$refs.voiceSelect.value === 'Choose a voice') {
+                this.toastStore.showToast(5000, ['Please select a Voice'], 'bg-red-300');
+                return
+
+            }
             this.gameSettings.difficulty = this.forms.difficulty
             this.gameSettings.numOfWords = this.forms.numOfWords
+            this.voiceStore.currentVoice = this.forms.voice
 
-            // prevent user from using My Words when they have none in their list
+            // prevents user from using My Words when they have none in their list
             if (this.forms.difficulty === 'myWords') {
                 this.getWords()
             }
@@ -107,7 +115,7 @@ export default {
             
         },
 
-        // api call should be moved to an earlier point and sent to store. Temporary code
+        // TODO api call should be moved to an earlier point and sent to store. Temporary code
         getWords() {
             console.log('in')
             axios
@@ -157,6 +165,11 @@ export default {
             });
             this.voiceStore.voices = voiceArray
         },
+
+        changeVoice(event) {
+            this.voiceStore.setVoice(event)
+            this.voiceStore.sayWord(event.target.value, 'Welcome to Bee Hive')
+        }
     }
 }
 </script>

@@ -19,8 +19,9 @@
             <div class="text-white w-[20rem]">
                 <div class="flex justify-center ">
                     <p class="w-[5rem]">voice</p>
-                    <select v-model="currentVoice" @change="voiceStore.setVoice($event)" ref="voiceSelect" 
-                        class="bg-primary-green border-b-2  text-black outline-none ml-2 w-[15rem]">
+                    <select v-model="currentVoice" @change="changeVoice($event)" ref="voiceSelect" 
+                        class="bg-primary-green border-b-2  text-black outline-none ml-2 w-[15rem]"  
+                    >
                     </select>
                 </div>
                 <p>Definition</p>
@@ -90,15 +91,13 @@ export default {
     },
 
     mounted() {
-        // TODO get play's voice select to populate with current voice
-        // this.currentVoice = this.voiceStore.voices[this.voiceStore.currentVoiceIndex]
-        // console.log(this.currentVoice.name)
-        // this.currentVoice = this.currentVoice.name
         this.drawFace()
         this.getMyWords()
         this.populateVoiceFromStore()
-        this.$refs.voiceSelect.value = 'test'
+    },
 
+    updated() {
+        this.populateVoiceFromStore()
     },
 
     data() {
@@ -115,10 +114,7 @@ export default {
 
     methods: {
         hearWord(targetWord) {
-            const utterance  = new SpeechSynthesisUtterance();
-            utterance.text = targetWord;
-            utterance.voice = this.voiceStore.voices[this.voiceStore.currentVoiceIndex]
-            window.speechSynthesis.speak(utterance);
+            this.voiceStore.sayWord(this.voiceStore.currentVoiceIndex, targetWord)
         },
 
 
@@ -260,21 +256,41 @@ export default {
                 })
         },
 
-        // TODO GameSettings.vue and PlayView have similar functions See if can be put in store.
+
         populateVoiceFromStore() {
+            /* 
+            in order for the select to have the current value on the PlayView
+            copy the first node, the last node and insert the current node on
+            top of the stack. 
+            */
+            let copyNode = ''
+            let firstNode = ''
             for(let i = 0; i < this.voiceStore.voices.length; i++) {
                     const option = document.createElement('option');
                     option.textContent = this.voiceStore.voices[i].name + ' (' + this.voiceStore.voices[i].lang + ')';
                     option.value = i;
-                    this.$refs.voiceSelect.appendChild(option);
-                }     
-                
+
+                    if (i == 0) firstNode = option
+
+                    if (option.value === this.voiceStore.currentVoiceIndex.toString()) copyNode = option
+                    else this.$refs.voiceSelect.appendChild(option);
+            }
+
+            // TODO bug happens when in Game Settings no voice is selected and user backs up. Fix and remove try      
+            try {
+                this.$refs.voiceSelect.insertBefore(copyNode, firstNode);
+            } catch (error) {}
+
+        },
+
+        changeVoice(event) {
+            this.voiceStore.setVoice(event)
+            this.voiceStore.sayWord(event.target.value, 'Welcome to Bee Hive')
         },
 
         back() {
             this.gameSettings.settingsChosen = false
         }
-
     },
 }
 </script>
