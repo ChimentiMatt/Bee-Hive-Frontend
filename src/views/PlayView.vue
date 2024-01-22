@@ -285,7 +285,7 @@ export default {
 
         changeVoice(event) {
             this.voiceStore.setVoice(event)
-            this.voiceStore.sayWord(event.target.value, 'Welcome to Bee Hive')
+            this.voiceStore.sayWord(event.target.value, this.word)
         },
 
         back() {
