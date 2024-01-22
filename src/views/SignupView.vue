@@ -7,23 +7,23 @@
                 <h3 class="text-white">Create your acccount</h3>
             </div>
 
-            <Input v-model="form.name" label="Name" field="text"/>
+            <Input v-model="form.name" label="Name" field="text" />
 
-            <Input v-model="form.email" label="Email" field="email"/>
+            <Input v-model="form.email" label="Email" field="email" />
 
-            <Input v-model="form.password1" label="Password" field="password"/>
+            <Input v-model="form.password1" label="Password" field="password" />
 
-            <Input v-model="form.password2" label="Confirm Password" field="password"/>
-            
-            
+            <Input v-model="form.password2" label="Confirm Password" field="password" />
+
+
             <SubmitBtn text="Sign up" />
             <div class="flex justify-end items-end w-[20rem]">
                 <p class="text-center mt-[1rem]">Already have an Account?</p>
                 <RouterLink class="ml-1 text-center text-primary-green" to="/login">Login</RouterLink>
-                
+
             </div>
         </form>
-        
+
     </div>
 </template>
 
@@ -42,7 +42,7 @@ export default {
         }
     },
 
-    components: { 
+    components: {
         SubmitBtn,
         Input
     },
@@ -62,7 +62,7 @@ export default {
     methods: {
         submitForm() {
             this.errors = []
-            
+
             if (this.form.email === '') this.errors.push('Your e-mail is missing')
 
             if (this.form.name === '') this.errors.push('Your name is missing')
@@ -73,33 +73,33 @@ export default {
 
             if (this.errors.length === 0) {
                 axios
-                .post('/api/signup/', this.form )
-                .then(response => {
-                    if (response.data.status === 'success') {
-                        this.toastStore.showToast(5000, ['The user is Registered. Please Log in'], 'bg-primary-green')
+                    .post('/api/signup/', this.form)
+                    .then(response => {
+                        if (response.data.status === 'success') {
+                            this.toastStore.showToast(5000, ['The user is Registered. Please Log in'], 'bg-primary-green')
 
-                        this.form.email = ''
-                        this.form.name = ''
-                        this.form.password1 = ''
-                        this.form.password2 = ''
+                            this.form.email = ''
+                            this.form.name = ''
+                            this.form.password1 = ''
+                            this.form.password2 = ''
 
-                        this.$router.push('/')
+                            this.$router.push('/')
 
-                    } else {
+                        } else {
+                            this.toastStore.showToast(5000, ['Something went wrong. Please try again'], 'bg-red-300')
+                        }
+
+                    })
+                    .catch(error => {
+                        console.log('error', error)
                         this.toastStore.showToast(5000, ['Something went wrong. Please try again'], 'bg-red-300')
-                    }
 
-                })
-                .catch(error => {
-                    console.log('error', error)
-                    this.toastStore.showToast(5000, ['Something went wrong. Please try again'], 'bg-red-300')
-
-                })
+                    })
             } else {
                 this.toastStore.showToast(5000, this.errors, 'bg-red-300')
             }
         },
-        
+
     }
 }
 </script>

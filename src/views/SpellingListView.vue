@@ -7,19 +7,21 @@
         <div class="flex justify-center ">
             <p class="ml-[1.5rem] text-white">p. {{ page }}</p>
             <div class="w-[2rem] ml-[16rem]">
-                <img v-if="page > 1" @click="previousPage" class="h-[1rem] cursor-pointer rotate-180 hover:opacity-50" src="../assets/images/arrow.webp"/>
+                <img v-if="page > 1" @click="previousPage" class="h-[1rem] cursor-pointer rotate-180 hover:opacity-50"
+                    src="../assets/images/arrow.webp" />
             </div>
             <div class="w-[2rem]">
-                <img v-if="start + wordsPerPage <= words.length" @click="nextPage" class="h-[1rem] cursor-pointer hover:opacity-50" src="../assets/images/arrow.webp"/>
+                <img v-if="start + wordsPerPage <= words.length" @click="nextPage"
+                    class="h-[1rem] cursor-pointer hover:opacity-50" src="../assets/images/arrow.webp" />
             </div>
         </div>
-  
-        <div 
+
+        <div
             class="flex flex-col items-center mt-[1rem] pb-[5rem] bg-primary-green text-primary-blue font-bold overflow-hidden whitespace-nowrap">
 
             <div class="flex justify-center w-[21rem] border-b-2 ">
                 <p class="w-[20rem]">Word</p>
-                <p class="w-[20rem] text-start">Misspell</p> 
+                <p class="w-[20rem] text-start">Misspell</p>
             </div>
 
             <div class="flex justify-center">
@@ -27,21 +29,23 @@
                     <div v-for="word in filteredItems" v-bind:key="word.id" class="text-white">
                         <p class="w-[10rem] pt-2 border-b-[1px]">{{ word.correct_spelling }}</p>
                     </div>
-                    <input v-if="filteredItems.length < 17"  @keyup.enter="addWord" ref="wordInput" type="text" class="relative w-[10rem] mt-1 outline-none">
+                    <input v-if="filteredItems.length < 17" @keyup.enter="addWord" ref="wordInput" type="text"
+                        class="relative w-[10rem] mt-1 outline-none">
                 </div>
 
                 <div class="border-r-2 border-l-2 h-[35.1rem]"></div>
-                
+
                 <div class="flex flex-col">
                     <div v-for="word in filteredItems" v-bind:key="word.id" class="flex text-white">
                         <p class="w-[10rem] text-start pl-1 pt-2 border-b-[1px]">{{ word.incorrect_spelling }}</p>
                         <button @click="deleteWord(word.id)" class="hover:text-red-300 ">x</button>
                     </div>
-                    <button v-if="filteredItems.length < 17" @click="addWord" class="mt-1 relative w-[10rem] hover:opacity-80">add word</button>
+                    <button v-if="filteredItems.length < 17" @click="addWord"
+                        class="mt-1 relative w-[10rem] hover:opacity-80">add word</button>
                 </div>
             </div>
         </div>
-        
+
     </div>
 </template>
   
@@ -73,7 +77,7 @@ export default {
     },
 
     computed: {
-        filteredItems () {
+        filteredItems() {
             return this.words.slice(this.start, this.start + this.wordsPerPage)
         }
     },
@@ -105,14 +109,14 @@ export default {
             if (this.$refs.wordInput.value !== '') {
 
                 axios
-                .post('/api/words/create', { correct_spelling: this.$refs.wordInput.value, incorrect_spelling: 'n/a' })
-                .then(response => { 
-                    this.$refs.wordInput.value = ''
-                    this.getWords()
-                })
-                .catch(error => {
-                    console.log('error', error)
-                })   
+                    .post('/api/words/create', { correct_spelling: this.$refs.wordInput.value, incorrect_spelling: 'n/a' })
+                    .then(response => {
+                        this.$refs.wordInput.value = ''
+                        this.getWords()
+                    })
+                    .catch(error => {
+                        console.log('error', error)
+                    })
             }
         },
 

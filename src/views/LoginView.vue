@@ -12,19 +12,19 @@
                 <p>Welcome</p>
                 <p class="opacity-60">Please sign in</p>
             </div>
-            <Input v-model="form.email" label="Email" field="email"/>
+            <Input v-model="form.email" label="Email" field="email" />
 
-            <Input v-model="form.password" label="Password" field="password"/>
+            <Input v-model="form.password" label="Password" field="password" />
 
             <p class="w-[20rem] opacity-[50%] mt-1 text-end">Forgot Password</p>
-            
+
             <SubmitBtn text="Login" />
 
             <div class="flex justify-end items-end w-[20rem]">
                 <p class="text-center mt-[1rem]">Need an Account? </p>
                 <RouterLink class="ml-2 text-center text-primary-green" to="/signup">Sign up</RouterLink>
             </div>
-            
+
         </form>
     </div>
 </template>
@@ -43,15 +43,15 @@ export default {
     setup() {
         const userStore = useUserStore();
         const toastStore = useToastStore();
-        
+
         return {
             userStore,
             toastStore,
         };
     },
 
-    components: { 
-        Navbar, 
+    components: {
+        Navbar,
         SubmitBtn,
         Input
     },
@@ -79,11 +79,11 @@ export default {
                         this.userStore.setToken(response.data);
                         axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.access;
                         this.$router.push('/');
-                })
+                    })
                     .catch(error => {
-                    console.log('error', error);
-                    this.toastStore.showToast(5000, ['Unable to login'], 'bg-red-300');
-                });
+                        console.log('error', error);
+                        this.toastStore.showToast(5000, ['Unable to login'], 'bg-red-300');
+                    });
             }
         },
     },

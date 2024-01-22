@@ -1,6 +1,6 @@
 <template>
     <Navbar />
-    
+
     <div class="bg-primary-green  h-screen">
         <LogoutBtn />
     </div>
@@ -19,8 +19,8 @@ export default {
     },
     methods: {
         logout() {
-        this.userStore.removeToken()
-        this.$router.push('/')
+            this.userStore.removeToken()
+            this.$router.push('/')
         }
     }
 }

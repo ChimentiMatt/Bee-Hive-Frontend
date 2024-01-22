@@ -1,11 +1,9 @@
 <template>
-    
     <div class="bg-primary-green h-screen">
         <Navbar />
         {{ currentVoice.name }}
-        <img class="absolute h-[1.5rem] rotate-180 ml-5 mt-[0.5rem] cursor-pointer hover:opacity-80 " src="../assets/images/arrow.webp"
-            @click="back"
-        />
+        <img class="absolute h-[1.5rem] rotate-180 ml-5 mt-[0.5rem] cursor-pointer hover:opacity-80 "
+            src="../assets/images/arrow.webp" @click="back" />
 
         <div class="flex mr-[10rem] pt-2 justify-center md:mt-2">
             <img class="h-[2.5rem] rotate-[-10deg] cursor-pointer hover:opacity-50" src="../assets/images/wings.png" />
@@ -19,9 +17,8 @@
             <div class="text-white w-[20rem]">
                 <div class="flex justify-center ">
                     <p class="w-[5rem]">voice</p>
-                    <select v-model="currentVoice" @change="changeVoice($event)" ref="voiceSelect" 
-                        class="bg-primary-green border-b-2  text-black outline-none ml-2 w-[15rem]"  
-                    >
+                    <select v-model="currentVoice" @change="changeVoice($event)" ref="voiceSelect"
+                        class="bg-primary-green border-b-2  text-black outline-none ml-2 w-[15rem]">
                     </select>
                 </div>
                 <p>Definition</p>
@@ -29,14 +26,15 @@
 
             <div class="h-[8rem] sm:h-[12rem] w-[20rem] hover:opacity-50">
                 <p @click="hearWord(definition)" class="mt-[0.5rem]">{{ definition }}</p>
-                <img @click="hearWord(definition)" class="h-[1rem] cursor-pointer hover:opacity-50" src="../assets/images/soundIcon.png" />
+                <img @click="voiceStore.sayWordPermissions(definition)" class="h-[1rem] cursor-pointer hover:opacity-50"
+                    src="../assets/images/soundIcon.png" />
             </div>
 
             <div class="flex justify-end h-[1rem] w-[20rem] gap-5">
-                <p v-for="missedWords in attempts" class="text-red-500">{{missedWords}}</p>
+                <p v-for="missedWords in attempts" class="text-red-500">{{ missedWords }}</p>
             </div>
 
-            <div class="flex items-center cursor-pointer hover:opacity-50" @click="hearWord(word)">
+            <div @click="voiceStore.sayWordPermissions(word)" class="flex items-center cursor-pointer hover:opacity-50">
                 <p class="text-[.5rem]">hear word</p>
                 <img class="h-[2.5rem]" src="../assets/images/soundIcon.png" />
             </div>
@@ -44,16 +42,18 @@
             <form v-on:submit.prevent="submitWord">
                 <div class="w-[20rem] flex border-b-2 items-center md:mt-[1rem]">
                     <label class="flex items-end text-white">Answer</label>
-                    <input ref="wordInput" type="text" class="text-[24px] w-full ml-4 py-4 px-6 border border-gray-200 rounded-lg bg-transparent border-none outline-none">
+                    <input ref="wordInput" type="text"
+                        class="text-[24px] w-full ml-4 py-4 px-6 border border-gray-200 rounded-lg bg-transparent border-none outline-none">
                 </div>
 
-                <SubmitBtn text="Submit"/>
+                <SubmitBtn text="Submit" />
             </form>
-            <p @click="skipWord" class="w-[5rem] ml-[15rem] text-right mt-[1rem] opacity-50 cursor-pointer hover:opacity-80">Skip Word</p>
+            <p @click="skipWord"
+                class="w-[5rem] ml-[15rem] text-right mt-[1rem] opacity-50 cursor-pointer hover:opacity-80">Skip Word</p>
         </div>
 
     </div>
-  </template>
+</template>
 
 <script>
 import Navbar from '@/components/Navbar.vue'
@@ -84,7 +84,7 @@ export default {
     },
 
     components: {
-        Navbar,        
+        Navbar,
         LogoutBtn,
         SubmitBtn,
         useGameSettings
@@ -112,6 +112,7 @@ export default {
         }
     },
 
+    // TODO replace with store method
     methods: {
         hearWord(targetWord) {
             this.voiceStore.sayWord(this.voiceStore.currentVoiceIndex, targetWord)
@@ -141,13 +142,13 @@ export default {
 
         getDefinition() {
             fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${this.word}`)
-            .then(res => res.json())
-            .then((res)=> {
-                this.definition = res[0]['meanings'][0]['definitions'][0]['definition']
-            })
-            .catch((error) => {
-                console.log(`Word ${this.word} did not work with dictionary api, fetching new word`, error)
-            })
+                .then(res => res.json())
+                .then((res) => {
+                    this.definition = res[0]['meanings'][0]['definitions'][0]['definition']
+                })
+                .catch((error) => {
+                    console.log(`Word ${this.word} did not work with dictionary api, fetching new word`, error)
+                })
         },
 
         submitWord() {
@@ -156,11 +157,11 @@ export default {
                 this.getWord()
                 this.$refs.wordInput.value = ''
 
-                this.score ++
+                this.score++
                 this.drawProgress()
                 this.resetWord()
             }
-            else if (this.attempts.length === 3) { 
+            else if (this.attempts.length === 3) {
                 this.toastStore.showToast(5000, [`The word "${this.word.toUpperCase()}" added to your words`], 'bg-green-300')
                 this.postMissedWord()
                 this.resetWord()
@@ -168,7 +169,7 @@ export default {
             }
             else {
                 this.attempts.push(this.$refs.wordInput.value.toLowerCase())
-                this.$refs.wordInput.style = 'color: red' 
+                this.$refs.wordInput.style = 'color: red'
             }
         },
 
@@ -179,20 +180,20 @@ export default {
 
         resetWord() {
             this.attempts = []
-            this.$refs.wordInput.style = 'color: black' 
+            this.$refs.wordInput.style = 'color: black'
             this.$refs.wordInput.value = ''
         },
 
         drawProgress() {
-            const pointsPerCorrect = 350 /  this.gameSettings.numOfWords
-            
+            const pointsPerCorrect = 350 / this.gameSettings.numOfWords
+
             const ctx = this.$refs.canvas.getContext("2d");
             this.score % 2 === 0 ? ctx.fillStyle = "#F7F06A" : ctx.fillStyle = "black"
-        
+
             // x y width height
             ctx.fillRect(this.points, 0, pointsPerCorrect, 100);
             this.points += pointsPerCorrect
-                        
+
             if (this.points >= 350) {
                 this.points = 35
                 this.score = 0
@@ -202,12 +203,12 @@ export default {
         },
 
         drawFace() {
-            const ctx = this.$refs.canvas.getContext("2d"); 
+            const ctx = this.$refs.canvas.getContext("2d");
 
             // yellow head
             ctx.fillStyle = "#F7F06A"
             ctx.fillRect(0, 0, 35, 100);
-            
+
             // mouth
             ctx.beginPath();
             ctx.arc(20, 20, 5, 0, 2 * Math.PI);
@@ -234,14 +235,14 @@ export default {
         postMissedWord() {
             if (!this.detectIfNewWord()) {
                 axios
-                .post('/api/words/create', { correct_spelling: this.word, incorrect_spelling: this.$refs.wordInput.value })
-                .then(response => { 
+                    .post('/api/words/create', { correct_spelling: this.word, incorrect_spelling: this.$refs.wordInput.value })
+                    .then(response => {
                         this.missedWords.push(this.word)
                     })
                     .catch(error => {
                         console.log('error', error)
-                })
-             }
+                    })
+            }
         },
 
         getMyWords() {
@@ -265,21 +266,21 @@ export default {
             */
             let copyNode = ''
             let firstNode = ''
-            for(let i = 0; i < this.voiceStore.voices.length; i++) {
-                    const option = document.createElement('option');
-                    option.textContent = this.voiceStore.voices[i].name + ' (' + this.voiceStore.voices[i].lang + ')';
-                    option.value = i;
+            for (let i = 0; i < this.voiceStore.voices.length; i++) {
+                const option = document.createElement('option');
+                option.textContent = this.voiceStore.voices[i].name + ' (' + this.voiceStore.voices[i].lang + ')';
+                option.value = i;
 
-                    if (i == 0) firstNode = option
+                if (i == 0) firstNode = option
 
-                    if (option.value === this.voiceStore.currentVoiceIndex.toString()) copyNode = option
-                    else this.$refs.voiceSelect.appendChild(option);
+                if (option.value === this.voiceStore.currentVoiceIndex.toString()) copyNode = option
+                else this.$refs.voiceSelect.appendChild(option);
             }
 
             // TODO bug happens when in Game Settings no voice is selected and user backs up. Fix and remove try      
             try {
                 this.$refs.voiceSelect.insertBefore(copyNode, firstNode);
-            } catch (error) {}
+            } catch (error) { }
 
         },
 

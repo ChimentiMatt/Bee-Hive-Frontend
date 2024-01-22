@@ -1,12 +1,12 @@
 <template>
     <div class="bg-primary-green h-screen">
         <Navbar />
-        
+
         <form v-on:submit.prevent="submitForm" class="flex flex-col justify-center items-center drop-shadow-lg">
             <div class="w-[20rem] flex flex-col border-b-2 items-center mt-[2rem] text-[24px] font-bold text-primary-blue">
 
                 <h1 class="text-[40px] text-white drop-shadow-lg">Game Settings</h1>
-                
+
                 <div class="w-[20rem] flex border-b-2 items-center mt-[4rem] text-right">
                     <label>Difficulty</label>
                     <select v-model="forms.difficulty" class="w-full ml-[2rem]  mt-2 bg-transparent text-right pr-2">
@@ -15,29 +15,29 @@
                         <option value="myWords">My Words</option>
                     </select>
                 </div>
-                
+
                 <div class="w-[20rem] flex border-b-2 items-center mt-[1rem] whitespace-nowrap">
                     <label>Number of Words</label>
-                    <input
-                        v-model="forms.numOfWords"
-                        type="number"
-                        class="text-right w-full mt-2 py-4 px-6 border border-gray-200 rounded-lg bg-transparent border-none outline-none"
-                    >
+                    <input v-model="forms.numOfWords" type="number"
+                        class="text-right w-full mt-2 py-4 px-6 border border-gray-200 rounded-lg bg-transparent border-none outline-none">
                 </div>
-                
+
                 <div class="w-[20rem] flex border-b-2 items-center mt-[2rem]">
                     <label>Voice</label>
-                    <select v-model="forms.voice" @change="changeVoice($event)" ref="voiceSelect" class="w-full ml-[2rem] mt-2 bg-transparent text-right pr-2">
+                    <select v-model="forms.voice" @change="changeVoice($event)" ref="voiceSelect"
+                        class="w-full ml-[2rem] mt-2 bg-transparent text-right pr-2">
                         <option>Choose a voice</option>
                     </select>
+                    <img class="h-[1rem] cursor-pointer hover:opacity-50 mt-[0.8rem] ml-[1rem]"
+                        @click="voiceStore.sayWordPermissions('Welcome to Bee Hive')"
+                        src="../assets/images/soundIcon.png" />
                 </div>
             </div>
-            
-            <SubmitBtn text="Game Start"/>
+
+            <SubmitBtn text="Game Start" />
         </form>
 
     </div>
-        
 </template>
 
 <script>
@@ -65,7 +65,7 @@ export default {
         };
     },
 
-    components: { 
+    components: {
         Input,
         SubmitBtn,
         Navbar,
@@ -112,7 +112,7 @@ export default {
                 this.gameSettings.settingsChosen = true;
                 this.voiceStore.currentVoice = this.$refs.voiceSelect
             }
-            
+
         },
 
         // TODO api call should be moved to an earlier point and sent to store. Temporary code
@@ -121,7 +121,7 @@ export default {
             axios
                 .get('/api/words/user_words')
                 .then(response => {
-                    if ( response.data.data.length < 1) {
+                    if (response.data.data.length < 1) {
                         this.toastStore.showToast(5000, ['Unable to select My Words. No current words in list.'], 'bg-red-300');
                     }
                     else {
@@ -155,13 +155,13 @@ export default {
             const voiceArray = []
 
             data.then((voices) => {
-                for(let i = 0; i < voices.length; i++) {
+                for (let i = 0; i < voices.length; i++) {
                     const option = document.createElement('option');
                     option.textContent = voices[i].name + ' (' + voices[i].lang + ')';
                     option.value = i;
                     this.$refs.voiceSelect.appendChild(option);
                     voiceArray.push(voices[i])
-                }     
+                }
             });
             this.voiceStore.voices = voiceArray
         },
