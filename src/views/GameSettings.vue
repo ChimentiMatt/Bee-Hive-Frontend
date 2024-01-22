@@ -94,7 +94,6 @@ export default {
 
     methods: {
         submitForm() {
-            console.log(this.$refs.voiceSelect.value)
             if (this.$refs.voiceSelect.value === 'Choose a voice') {
                 this.toastStore.showToast(5000, ['Please select a Voice'], 'bg-red-300');
                 return
@@ -117,7 +116,6 @@ export default {
 
         // TODO api call should be moved to an earlier point and sent to store. Temporary code
         getWords() {
-            console.log('in')
             axios
                 .get('/api/words/user_words')
                 .then(response => {
