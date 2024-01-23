@@ -6,7 +6,8 @@ export const useGameSettings = defineStore({
     state: () => ({
         settingsChosen: false,
         difficulty: 'easy',
-        numOfWords: 10
+        numOfWords: 10,
+        attempts: 3,
     }),
 
     actions: {

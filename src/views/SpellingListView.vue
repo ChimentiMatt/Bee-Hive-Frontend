@@ -3,7 +3,7 @@
         <Navbar />
 
         <h1 class="text-[40px] mt-[2rem] text-center text-white drop-shadow-lg font-bold">Spelling List</h1>
-
+        
         <div class="flex justify-center ">
             <p class="ml-[1.5rem] text-white">p. {{ page }}</p>
             <div class="w-[2rem] ml-[16rem]">

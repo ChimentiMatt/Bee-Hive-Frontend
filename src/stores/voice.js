@@ -39,7 +39,6 @@ export const useVoiceStore = defineStore({
                 utterance.voice = this.voices[voiceIndex]
                 window.speechSynthesis.speak(utterance)
             }
-        },
-        
+        }
     }
 })

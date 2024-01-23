@@ -17,11 +17,16 @@
                 </div>
 
                 <div class="w-[20rem] flex border-b-2 items-center mt-[1rem] whitespace-nowrap">
-                    <label>Number of Words</label>
-                    <input v-model="forms.numOfWords" type="number"
+                    <label>Number Of Words</label>
+                    <input v-model="forms.numOfWords" type="number" min="2" max="100"
                         class="text-right w-full mt-2 py-4 px-6 border border-gray-200 rounded-lg bg-transparent border-none outline-none">
                 </div>
 
+                <div class="w-[20rem] flex border-b-2 items-center mt-[1rem] whitespace-nowrap">
+                    <label>Attempts Per Word</label>
+                    <input v-model="forms.attempts" type="number" min="1" max="5"
+                        class="text-right w-full mt-2 py-4 px-6 border border-gray-200 rounded-lg bg-transparent border-none outline-none">
+                </div>
                 <div class="w-[20rem] flex border-b-2 items-center mt-[2rem]">
                     <label>Voice</label>
                     <select v-model="forms.voice" @change="changeVoice($event)" ref="voiceSelect"
@@ -82,6 +87,7 @@ export default {
                 difficulty: 'easy',
                 numOfWords: 10,
                 voice: '',
+                attempts: 3,
             },
             errors: [],
             test: this.gameSettings.settingsChosen
@@ -89,6 +95,10 @@ export default {
     },
 
     mounted() {
+        this.populateVoiceFromAPI()
+    },
+
+    updated() {
         this.populateVoiceFromAPI()
     },
 
@@ -101,6 +111,7 @@ export default {
             }
             this.gameSettings.difficulty = this.forms.difficulty
             this.gameSettings.numOfWords = this.forms.numOfWords
+            this.gameSettings.attempts = this.forms.attempts
             this.voiceStore.currentVoice = this.forms.voice
 
             // prevents user from using My Words when they have none in their list
@@ -166,7 +177,7 @@ export default {
 
         changeVoice(event) {
             this.voiceStore.setVoice(event)
-            this.voiceStore.sayWord(event.target.value, 'Welcome to Bee Hive')
+            // this.voiceStore.sayWord(event.target.value, 'Welcome to Bee Hive')
         }
     }
 }

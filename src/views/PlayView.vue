@@ -161,7 +161,7 @@ export default {
                 this.drawProgress()
                 this.resetWord()
             }
-            else if (this.attempts.length === 3) {
+            else if (this.attempts.length === this.gameSettings.attempts -1) {
                 this.toastStore.showToast(5000, [`The word "${this.word.toUpperCase()}" added to your words`], 'bg-green-300')
                 this.postMissedWord()
                 this.resetWord()
